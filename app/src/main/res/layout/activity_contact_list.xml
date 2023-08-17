@@ -18,7 +18,7 @@
             android:id="@+id/recycler_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            tools:listitem="@layout/layout_contact_list" />
+            tools:listitem="@layout/layout_contact_cell" />
 
     </LinearLayout>
 
