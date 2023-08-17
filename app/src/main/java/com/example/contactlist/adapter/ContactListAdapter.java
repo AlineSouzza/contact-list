@@ -9,12 +9,13 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.contactlist.R;
+import com.example.contactlist.model.Contact;
 
 import java.util.ArrayList;
 
 public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.ViewHolder> {
-    private final ArrayList<String> contactList;
-    public ContactListAdapter(ArrayList<String> contactList) {
+    private final ArrayList<Contact> contactList;
+    public ContactListAdapter(ArrayList<Contact> contactList) {
         this.contactList = contactList;
     }
 
@@ -47,7 +48,8 @@ public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull ContactListAdapter.ViewHolder holder, int position) {
-        holder.getNameContact().setText(contactList.get(position));
+        holder.getNameContact().setText(contactList.get(position).getName());
+        holder.getNumberContact().setText(contactList.get(position).getNumber());
     }
 
     @Override
