@@ -11,13 +11,14 @@ import android.view.View;
 
 import com.example.contactlist.R;
 import com.example.contactlist.adapter.ContactListAdapter;
+import com.example.contactlist.model.Contact;
 
 import java.util.ArrayList;
 
 public class ContactListActivity extends AppCompatActivity {
     private ContactListAdapter adapter;
 
-    private ArrayList<String> contactList;
+    private ArrayList<Contact> contactList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,11 +30,9 @@ public class ContactListActivity extends AppCompatActivity {
 
         RecyclerView recyclerView = findViewById(R.id.recycler_view);
 
-        contactList = new ArrayList<String>();
+        contactList = new ArrayList<Contact>();
 
-        contactList.add("Aline");
-        contactList.add("Aline");
-        contactList.add("Aline");
+        contactList.add(new Contact(1, "Aline Souza", "71 983849730"));
 
         adapter = new ContactListAdapter(contactList);
 
