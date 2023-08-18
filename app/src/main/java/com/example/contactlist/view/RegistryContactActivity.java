@@ -24,10 +24,12 @@ public class RegistryContactActivity extends AppCompatActivity {
         String nameContact = getIntent().getStringExtra("ContactName");
         String numberContact = getIntent().getStringExtra("ContactNumber");
 
-        if (nameContact == null) return;
-        name.setText(nameContact);
+        if (nameContact != null) {
+            name.setText(nameContact);
+        }
 
-        if (numberContact == null) return;
-        number.setText(numberContact);
+        if (numberContact != null) {
+            number.setText(numberContact);
+        }
     }
 }
