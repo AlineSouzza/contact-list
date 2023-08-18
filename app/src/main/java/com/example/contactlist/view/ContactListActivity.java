@@ -42,6 +42,17 @@ public class ContactListActivity extends AppCompatActivity {
 
     public void registryContactClicked(View view) {
         Intent intent = new Intent(this, RegistryContactActivity.class);
-        startActivity(intent);
+        startActivityForResult(intent, 1);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        String resultNameContact = data.getStringExtra("NameContact");
+        String resultNumberContact = data.getStringExtra("NumberContact");
+
+        contactList.add(new Contact(1, resultNameContact, resultNumberContact));
+
+        adapter.notifyDataSetChanged();
     }
 }
