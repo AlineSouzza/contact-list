@@ -32,8 +32,6 @@ public class ContactListActivity extends AppCompatActivity {
 
         contactList = new ArrayList<Contact>();
 
-        contactList.add(new Contact(1, "Aline Souza", "71 983849730"));
-
         adapter = new ContactListAdapter(contactList);
 
         LinearLayoutManager llm = new LinearLayoutManager(this);

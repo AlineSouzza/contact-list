@@ -16,6 +16,7 @@
         android:padding="15dp">
 
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/name_contact"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
     </com.google.android.material.textfield.TextInputLayout>
@@ -28,8 +29,8 @@
         android:padding="15dp">
 
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/number_contact"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
     </com.google.android.material.textfield.TextInputLayout>
-
 </LinearLayout>
