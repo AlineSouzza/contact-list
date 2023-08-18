@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/item_contact"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:onClick="registryContactClicked"
     android:orientation="vertical"
-    android:padding="16dp"
     android:background="?android:attr/selectableItemBackground">
 
     <TextView
@@ -12,7 +11,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Contato"
-        android:layout_marginStart="10dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
         android:textColor="#C376AB"
         android:textSize="16sp"
         android:textStyle="bold" />
@@ -22,8 +22,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
-        android:layout_marginStart="10dp"
+        android:layout_marginStart="16dp"
         android:text="00 0000-0000"
         android:textColor="#C376AB"
         android:textSize="14sp" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_marginTop="16dp"
+        android:layout_height="0.5dp"
+        android:background="#808080"/>
 </LinearLayout>
