@@ -4,4 +4,5 @@
     <string name="save">Salvar</string>
     <string name="text_number">Número</string>
     <string name="text_name">Nome</string>
+    <string name="registry_new_contact">Registre um novo contato</string>
 </resources>
