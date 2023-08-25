@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.LinearLayout;
 
 import com.example.contactlist.R;
 import com.example.contactlist.adapter.ContactListAdapter;
@@ -20,6 +21,8 @@ public class ContactListActivity extends AppCompatActivity {
 
     private ArrayList<Contact> contactList;
 
+    private LinearLayout textRegisterContact;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,6 +32,7 @@ public class ContactListActivity extends AppCompatActivity {
         setSupportActionBar(myToolbar);
 
         RecyclerView recyclerView = findViewById(R.id.recycler_view);
+        textRegisterContact = findViewById(R.id.text_register_contact);
 
         contactList = new ArrayList<Contact>();
 
@@ -38,6 +42,10 @@ public class ContactListActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(llm);
 
         recyclerView.setAdapter(adapter);
+
+        if (contactList.size() == 0) {
+            textRegisterContact.setVisibility(View.VISIBLE);
+        }
     }
 
     public void registryContactClicked(View view) {
@@ -52,6 +60,7 @@ public class ContactListActivity extends AppCompatActivity {
         String resultNumberContact = data.getStringExtra("NumberContact");
 
         contactList.add(new Contact(1, resultNameContact, resultNumberContact));
+        textRegisterContact.setVisibility(View.GONE);
 
         adapter.notifyDataSetChanged();
     }

@@ -1,35 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/item_contact"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:background="?android:attr/selectableItemBackground">
+    android:background="?android:attr/selectableItemBackground"
+    android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/name_contact"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Contato"
-        android:layout_marginStart="16dp"
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_marginTop="16dp"
-        android:textColor="#C376AB"
-        android:textSize="16sp"
-        android:textStyle="bold" />
+        android:layout_marginBottom="16dp">
 
-    <TextView
-        android:id="@+id/number_contact"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:layout_marginStart="16dp"
-        android:text="00 0000-0000"
-        android:textColor="#C376AB"
-        android:textSize="14sp" />
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/name_contact"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:text="Contato"
+                android:textColor="#C376AB"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/number_contact"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="5dp"
+                android:text="00 0000-0000"
+                android:textColor="#C376AB"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/phone_call"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginEnd="10dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:padding="12dp"
+            app:srcCompat="@drawable/baseline_phone_24" />
+    </LinearLayout>
 
     <View
         android:layout_width="match_parent"
-        android:layout_marginTop="16dp"
         android:layout_height="0.5dp"
-        android:background="#808080"/>
+        android:background="#808080" />
 </LinearLayout>
