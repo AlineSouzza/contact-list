@@ -5,6 +5,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -18,10 +19,9 @@ import java.util.ArrayList;
 
 public class ContactListActivity extends AppCompatActivity {
     private ContactListAdapter adapter;
-
     private ArrayList<Contact> contactList;
-
     private LinearLayout textRegisterContact;
+    Context context = (Context) this;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,7 +36,7 @@ public class ContactListActivity extends AppCompatActivity {
 
         contactList = new ArrayList<Contact>();
 
-        adapter = new ContactListAdapter(contactList);
+        adapter = new ContactListAdapter(contactList, context);
 
         LinearLayoutManager llm = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(llm);
@@ -48,19 +48,33 @@ public class ContactListActivity extends AppCompatActivity {
         }
     }
 
-    public void registryContactClicked(View view) {
+    public void addContactClicked(View view) {
         Intent intent = new Intent(this, RegistryContactActivity.class);
+        intent.putExtra("Contact", new Contact(contactList.size(), null, null));
         startActivityForResult(intent, 1);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        String resultNameContact = data.getStringExtra("NameContact");
-        String resultNumberContact = data.getStringExtra("NumberContact");
 
-        contactList.add(new Contact(1, resultNameContact, resultNumberContact));
-        textRegisterContact.setVisibility(View.GONE);
+        if (resultCode != RESULT_OK) {
+            return;
+        }
+
+        Contact contact = (Contact) data.getSerializableExtra("Contact");
+
+        if (requestCode == 1) {
+            contactList.add(contact);
+            textRegisterContact.setVisibility(View.GONE);
+        } else if (requestCode == 2) {
+            for (int i = 0; i < contactList.size(); i++) {
+                if( contactList.get(i).getId() == contact.getId()){
+                    contactList.set(i, contact);
+                    break;
+                }
+            }
+        }
 
         adapter.notifyDataSetChanged();
     }
