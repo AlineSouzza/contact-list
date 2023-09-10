@@ -1,5 +1,7 @@
 package com.example.contactlist.adapter;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,8 +20,10 @@ import java.util.ArrayList;
 
 public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.ViewHolder> {
     private final ArrayList<Contact> contactList;
-    public ContactListAdapter(ArrayList<Contact> contactList) {
+    private Context context;
+    public ContactListAdapter(ArrayList<Contact> contactList, Context context) {
         this.contactList = contactList;
+        this.context = context;
     }
 
     @NonNull
@@ -30,23 +34,24 @@ public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        private final TextView nameContact;
-        private  final TextView numberContact;
         private final LinearLayout itemContact;
+        private final TextView tvNameContact;
+        private final TextView tvNumberContact;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            nameContact = (TextView) itemView.findViewById(R.id.name_contact);
-            numberContact = (TextView) itemView.findViewById(R.id.number_contact);
             itemContact = (LinearLayout) itemView.findViewById(R.id.item_contact);
+            tvNameContact = (TextView) itemView.findViewById(R.id.name_contact);
+            tvNumberContact = (TextView) itemView.findViewById(R.id.number_contact);
+
         }
 
-        public TextView getNameContact() {
-            return nameContact;
+        public TextView getTvNameContact() {
+            return tvNameContact;
         }
 
-        public TextView getNumberContact() {
-            return numberContact;
+        public TextView getTvNumberContact() {
+            return tvNumberContact;
         }
 
         public LinearLayout getItemContact() {
@@ -56,15 +61,14 @@ public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull ContactListAdapter.ViewHolder holder, int position) {
-        holder.getNameContact().setText(contactList.get(position).getName());
-        holder.getNumberContact().setText(contactList.get(position).getNumber());
+        holder.getTvNameContact().setText(contactList.get(position).getName());
+        holder.getTvNumberContact().setText(contactList.get(position).getNumber());
         holder.getItemContact().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(v.getContext(), RegistryContactActivity.class);
-                intent.putExtra("ContactName", contactList.get(holder.getAdapterPosition()).getName());
-                intent.putExtra("ContactNumber", contactList.get(holder.getAdapterPosition()).getNumber());
-                v.getContext().startActivity(intent);
+                intent.putExtra("Contact", contactList.get(holder.getAdapterPosition()));
+                ((Activity) context).startActivityForResult(intent,2);
             }
         });
     }

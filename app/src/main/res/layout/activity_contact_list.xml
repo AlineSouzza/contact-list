@@ -20,7 +20,7 @@
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
         android:backgroundTint="#C376AB"
-        android:onClick="registryContactClicked"
+        android:onClick="addContactClicked"
         app:srcCompat="@drawable/baseline_person_add_24" />
 
     <LinearLayout

@@ -13,11 +13,9 @@ import android.widget.EditText;
 import com.example.contactlist.R;
 import com.example.contactlist.model.Contact;
 
-import java.util.ArrayList;
-
 public class RegistryContactActivity extends AppCompatActivity {
-
-    private ArrayList<Contact> contactList;
+    private boolean isEditMode;
+    private Contact contact;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,23 +30,22 @@ public class RegistryContactActivity extends AppCompatActivity {
         EditText etNumber = findViewById(R.id.number_contact);
         Button saveButton = findViewById(R.id.save_contact);
 
-        String nameContact = getIntent().getStringExtra("ContactName");
-        String numberContact = getIntent().getStringExtra("ContactNumber");
+        contact = (Contact) getIntent().getSerializableExtra("Contact");
 
-        if (nameContact != null) {
-            etName.setText(nameContact);
-        }
-
-        if (numberContact != null) {
-            etNumber.setText(numberContact);
-        }
+        etName.setText(contact.getName());
+        etNumber.setText(contact.getNumber());
 
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent returnIntent = new Intent();
-                returnIntent.putExtra("NameContact", etName.getText().toString());
-                returnIntent.putExtra("NumberContact", etNumber.getText().toString());
+                String contactName = etName.getText().toString();
+                String contactNumber = etNumber.getText().toString();
+
+                contact.setName(contactName);
+                contact.setNumber(contactNumber);
+
+                returnIntent.putExtra("Contact", contact);
                 setResult(Activity.RESULT_OK, returnIntent);
                 finish();
             }
