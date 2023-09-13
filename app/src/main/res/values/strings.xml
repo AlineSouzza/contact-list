@@ -5,4 +5,8 @@
     <string name="text_number">Número</string>
     <string name="text_name">Nome</string>
     <string name="registry_new_contact">Registre um novo contato</string>
+    <string name="info_ivalid_contact">Informações do contato estão incorretas, por favor verifique os dados adicionados e tente novamente.</string>
+    <string name="db_ivalid_contact">Error ao enviar os dados para o banco de dados.</string>
+    <string name="button_ok">OK</string>
+    <string name="title_error">ERROR</string>
 </resources>
