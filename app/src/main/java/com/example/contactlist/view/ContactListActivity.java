@@ -1,5 +1,6 @@
 package com.example.contactlist.view;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -8,12 +9,19 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 
 import com.example.contactlist.R;
 import com.example.contactlist.adapter.ContactListAdapter;
 import com.example.contactlist.model.Contact;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 
@@ -35,7 +43,6 @@ public class ContactListActivity extends AppCompatActivity {
         textRegisterContact = findViewById(R.id.text_register_contact);
 
         contactList = new ArrayList<Contact>();
-
         adapter = new ContactListAdapter(contactList, context);
 
         LinearLayoutManager llm = new LinearLayoutManager(this);
@@ -43,14 +50,38 @@ public class ContactListActivity extends AppCompatActivity {
 
         recyclerView.setAdapter(adapter);
 
-        if (contactList.size() == 0) {
-            textRegisterContact.setVisibility(View.VISIBLE);
-        }
+        returnContact();
+    }
+
+
+    protected void returnContact() {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        db.collection("Contacts")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                contactList.add(new Contact(document.getId(), document.getString("name"), document.getString("number")));
+                            }
+
+                            if (contactList.size() == 0) {
+                                textRegisterContact.setVisibility(View.VISIBLE);
+                            }
+
+                            adapter.notifyDataSetChanged();
+                        } else {
+                            Log.d("db", "get failed with ", task.getException());
+                        }
+                    }
+                });
     }
 
     public void addContactClicked(View view) {
         Intent intent = new Intent(this, RegistryContactActivity.class);
-        intent.putExtra("Contact", new Contact(contactList.size(), null, null));
+        intent.putExtra("Contact", new Contact(null, null, null));
         startActivityForResult(intent, 1);
     }
 
@@ -69,7 +100,7 @@ public class ContactListActivity extends AppCompatActivity {
             textRegisterContact.setVisibility(View.GONE);
         } else if (requestCode == 2) {
             for (int i = 0; i < contactList.size(); i++) {
-                if( contactList.get(i).getId() == contact.getId()){
+                if (contactList.get(i).getId() == contact.getId()) {
                     contactList.set(i, contact);
                     break;
                 }
