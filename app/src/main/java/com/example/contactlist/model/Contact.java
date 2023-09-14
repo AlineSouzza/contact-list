@@ -3,11 +3,11 @@ package com.example.contactlist.model;
 import java.io.Serializable;
 
 public class Contact implements Serializable {
-    private int id;
+    private String id;
     private String name;
     private String number;
 
-    public Contact(int id, String name, String number) {
+    public Contact(String id, String name, String number) {
         this.id = id;
         this.name = name;
         this.number = number;
@@ -29,11 +29,11 @@ public class Contact implements Serializable {
         this.number = number;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 }
