@@ -49,12 +49,13 @@ public class ContactListActivity extends AppCompatActivity {
 
         recyclerView.setAdapter(adapter);
 
-        returnContact();
+        loadContacts();
     }
 
 
-    protected void returnContact() {
+    protected void loadContacts() {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
+        contactList.clear();
 
         db.collection("Contacts")
                 .get()
@@ -98,12 +99,7 @@ public class ContactListActivity extends AppCompatActivity {
             contactList.add(contact);
             textRegisterContact.setVisibility(View.GONE);
         } else if (requestCode == 2) {
-            for (int i = 0; i < contactList.size(); i++) {
-                if (contactList.get(i).getId() == contact.getId()) {
-                    contactList.set(i, contact);
-                    break;
-                }
-            }
+            loadContacts();
         }
 
         adapter.notifyDataSetChanged();
