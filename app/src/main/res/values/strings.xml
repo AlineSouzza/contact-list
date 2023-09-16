@@ -8,5 +8,11 @@
     <string name="info_ivalid_contact">Informações do contato estão incorretas, por favor verifique os dados adicionados e tente novamente.</string>
     <string name="db_ivalid_contact">Error ao enviar os dados para o banco de dados.</string>
     <string name="button_ok">OK</string>
+    <string name="button_yes">SIM</string>
+    <string name="button_no">NÃO</string>
     <string name="title_error">ERROR</string>
+    <string name="title_atencao">ATENÇÃO</string>
+    <string name="text_delete_contact">Deseja realmente excluir este contato?</string>
+    <string name="toast_deleted_contact_success">Contato excluído com sucesso!</string>
+    <string name="toast_deleted_contact_error">Erro ao excluir o contato.</string>
 </resources>

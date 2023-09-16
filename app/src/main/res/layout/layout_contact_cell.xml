@@ -45,11 +45,20 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:layout_marginEnd="10dp"
             android:clickable="true"
             android:focusable="true"
             android:padding="12dp"
             app:srcCompat="@drawable/baseline_phone_24" />
+
+        <ImageView
+            android:id="@+id/delete_contact"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:clickable="true"
+            android:focusable="true"
+            android:padding="12dp"
+            app:srcCompat="@drawable/baseline_delete_outline_24" />
     </LinearLayout>
 
     <View
