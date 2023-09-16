@@ -3,9 +3,11 @@ package com.example.contactlist.adapter;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -37,13 +39,14 @@ public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.
         private final LinearLayout itemContact;
         private final TextView tvNameContact;
         private final TextView tvNumberContact;
+        private final ImageView phoneCall;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
             itemContact = (LinearLayout) itemView.findViewById(R.id.item_contact);
             tvNameContact = (TextView) itemView.findViewById(R.id.name_contact);
             tvNumberContact = (TextView) itemView.findViewById(R.id.number_contact);
-
+            phoneCall = (ImageView) itemView.findViewById(R.id.phone_call);
         }
 
         public TextView getTvNameContact() {
@@ -57,6 +60,10 @@ public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.
         public LinearLayout getItemContact() {
             return itemContact;
         }
+
+        public ImageView makePhoneCall() {
+            return phoneCall;
+        }
     }
 
     @Override
@@ -69,6 +76,15 @@ public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.
                 Intent intent = new Intent(v.getContext(), RegistryContactActivity.class);
                 intent.putExtra("Contact", contactList.get(holder.getAdapterPosition()));
                 ((Activity) context).startActivityForResult(intent,2);
+            }
+        });
+
+        holder.makePhoneCall().setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                Uri number = Uri.parse("tel:" + contactList.get(holder.getAdapterPosition()).getNumber());
+                Intent callIntent = new Intent(Intent.ACTION_DIAL, number);
+                ((Activity) context).startActivity(callIntent);
             }
         });
     }
