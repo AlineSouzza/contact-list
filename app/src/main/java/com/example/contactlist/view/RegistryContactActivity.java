@@ -31,10 +31,6 @@ public class RegistryContactActivity extends AppCompatActivity {
     private EditText etName;
     private EditText etNumber;
     private Button saveButton;
-    private Intent returnIntent;
-    private Map<String, Object> contactMap;
-    private String contactName;
-    private String contactNumber;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,12 +57,10 @@ public class RegistryContactActivity extends AppCompatActivity {
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                returnIntent = new Intent();
+                String contactName = etName.getText().toString();
+                String contactNumber = etNumber.getText().toString();
 
-                contactName = etName.getText().toString();
-                contactNumber = etNumber.getText().toString();
-
-                contactMap = new HashMap<String, Object>();
+                Map<String, Object> contactMap = new HashMap<String, Object>();
                 contactMap.put("name", contactName);
                 contactMap.put("number", contactNumber);
 
@@ -84,22 +78,25 @@ public class RegistryContactActivity extends AppCompatActivity {
                 }
 
                 if (contact.getName() != null || contact.getNumber() != null) {
-                    updateContact();
+                    updateContact(contactMap);
                 } else {
-                    createContact();
+                    createContact(contactMap);
                 }
             }
         });
     }
 
-    public void createContact() {
-        db.collection("Contacts").document().set(contactMap)
+    public void createContact(Map<String, Object> contactMap) {
+        String documentId = db.collection("Contacts").document().getId();
+        db.collection("Contacts").document(documentId).set(contactMap)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        contact.setName(contactName);
-                        contact.setNumber(contactNumber);
+                        contact.setId(documentId);
+                        contact.setName(contactMap.get("name").toString());
+                        contact.setNumber(contactMap.get("number").toString());
 
+                        Intent returnIntent = new Intent();
                         returnIntent.putExtra("Contact", contact);
                         setResult(Activity.RESULT_OK, returnIntent);
                         finish();
@@ -108,6 +105,7 @@ public class RegistryContactActivity extends AppCompatActivity {
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
+                        Log.e("db", "error " + e);
 
                         AlertDialog.Builder builder = new AlertDialog.Builder(RegistryContactActivity.this);
                         builder.setMessage(R.string.db_ivalid_contact)
@@ -123,14 +121,15 @@ public class RegistryContactActivity extends AppCompatActivity {
                 });
     }
 
-    public void updateContact() {
+    public void updateContact(Map<String, Object> contactMap) {
         db.collection("Contacts").document(contact.getId())
                 .update(contactMap).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
-                        contact.setName(contactName);
-                        contact.setNumber(contactNumber);
+                        contact.setName(contactMap.get("name").toString());
+                        contact.setNumber(contactMap.get("number").toString());
 
+                        Intent returnIntent = new Intent();
                         returnIntent.putExtra("Contact", contact);
                         setResult(Activity.RESULT_OK, returnIntent);
                         finish();
@@ -139,6 +138,7 @@ public class RegistryContactActivity extends AppCompatActivity {
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
+                        Log.e("db", "error " + e);
                         AlertDialog.Builder builder = new AlertDialog.Builder(RegistryContactActivity.this);
                         builder.setMessage(R.string.db_ivalid_contact)
                                 .setPositiveButton(R.string.button_ok, new DialogInterface.OnClickListener() {
