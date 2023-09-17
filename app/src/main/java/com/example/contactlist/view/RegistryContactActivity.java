@@ -16,6 +16,7 @@ import android.widget.EditText;
 
 import com.example.contactlist.R;
 import com.example.contactlist.model.Contact;
+import com.example.contactlist.utils.MaskEditUtil;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -47,6 +48,7 @@ public class RegistryContactActivity extends AppCompatActivity {
         etNumber = findViewById(R.id.number_contact);
         saveButton = findViewById(R.id.save_contact);
 
+        etNumber.addTextChangedListener(MaskEditUtil.mask(etNumber, MaskEditUtil.FORMAT_PHONE));
         etName.setText(contact.getName());
         etNumber.setText(contact.getNumber());
 
