@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.contactlist.R;
 import com.example.contactlist.model.Contact;
+import com.example.contactlist.view.ContactListActivity;
 import com.example.contactlist.view.RegistryContactActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -31,10 +32,12 @@ import java.util.ArrayList;
 public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.ViewHolder> {
     private final ArrayList<Contact> contactList;
     private Context context;
+    private ContactListActivity activity;
 
-    public ContactListAdapter(ArrayList<Contact> contactList, Context context) {
+    public ContactListAdapter(ArrayList<Contact> contactList, Context context, ContactListActivity activity) {
         this.contactList = contactList;
         this.context = context;
+        this.activity = activity;
     }
 
     @NonNull
@@ -120,20 +123,19 @@ public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.
                                         .addOnCompleteListener(new OnCompleteListener<Void>() {
                                             @Override
                                             public void onComplete(@NonNull Task<Void> task) {
+                                                contactList.remove(holder.getAdapterPosition());
+                                                activity.checkList();
+
                                                 Toast.makeText(v.getContext(), R.string.toast_deleted_contact_success, Toast.LENGTH_SHORT).show();
-                                                Log.e("db", "Contato excluído do banco de dados com sucesso ");
                                             }
                                         }).addOnFailureListener(new OnFailureListener() {
                                             @Override
                                             public void onFailure(@NonNull Exception e) {
                                                 Toast.makeText(v.getContext(), R.string.toast_deleted_contact_error, Toast.LENGTH_SHORT).show();
-                                                Log.e("db", "Erro ao excluir o contato do banco de dados com sucesso ");
+                                                Log.e("db", "Erro ao excluir o contato do banco de dados: " + e);
                                             }
                                         });
 
-                                contactList.remove(holder.getAdapterPosition());
-
-                                notifyDataSetChanged();
                                 dialog.dismiss();
 
                             }
