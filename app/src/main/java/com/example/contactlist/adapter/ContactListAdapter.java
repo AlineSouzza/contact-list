@@ -51,6 +51,7 @@ public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.
         private final LinearLayout itemContact;
         private final TextView tvNameContact;
         private final TextView tvNumberContact;
+        private TextView tvLetterIcon;
         private final ImageView phoneCall;
         private final ImageView deleteContact;
 
@@ -60,6 +61,7 @@ public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.
             itemContact = (LinearLayout) itemView.findViewById(R.id.item_contact);
             tvNameContact = (TextView) itemView.findViewById(R.id.name_contact);
             tvNumberContact = (TextView) itemView.findViewById(R.id.number_contact);
+            tvLetterIcon = (TextView) itemView.findViewById(R.id.letter_icon);
             phoneCall = (ImageView) itemView.findViewById(R.id.phone_call);
             deleteContact = (ImageView) itemView.findViewById(R.id.delete_contact);
         }
@@ -67,28 +69,32 @@ public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.
         public TextView getTvNameContact() {
             return tvNameContact;
         }
-
         public TextView getTvNumberContact() {
             return tvNumberContact;
         }
-
         public LinearLayout getItemContact() {
             return itemContact;
         }
-
         public ImageView makePhoneCall() {
             return phoneCall;
         }
-
         public ImageView getDeleteContact() {
             return deleteContact;
+        }
+        public TextView getTvLetterIcon() {
+            return tvLetterIcon;
         }
     }
 
     @Override
     public void onBindViewHolder(@NonNull ContactListAdapter.ViewHolder holder, int position) {
-        holder.getTvNameContact().setText(contactList.get(position).getName());
+        String contactName = contactList.get(position).getName();
+        char firstLetter = contactName.charAt(0);
+
+        holder.getTvNameContact().setText(contactName);
         holder.getTvNumberContact().setText(contactList.get(position).getNumber());
+        holder.getTvLetterIcon().setText(String.valueOf(firstLetter));
+
         holder.getItemContact().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
