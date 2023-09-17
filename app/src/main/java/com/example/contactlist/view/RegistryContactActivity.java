@@ -77,6 +77,8 @@ public class RegistryContactActivity extends AppCompatActivity {
 
                     AlertDialog dialog = builder.create();
                     dialog.show();
+
+                    return;
                 }
 
                 if (contact.getName() != null || contact.getNumber() != null) {
