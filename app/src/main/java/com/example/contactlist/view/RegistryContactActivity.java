@@ -32,25 +32,30 @@ public class RegistryContactActivity extends AppCompatActivity {
     private EditText etName;
     private EditText etNumber;
     private Button saveButton;
+    private Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registry_contact);
 
-        Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(myToolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
         contact = (Contact) getIntent().getSerializableExtra("Contact");
+
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setTitle(contact != null ? R.string.edit_contact : R.string.new_contact);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         etName = findViewById(R.id.name_contact);
         etNumber = findViewById(R.id.number_contact);
         saveButton = findViewById(R.id.save_contact);
 
         etNumber.addTextChangedListener(MaskEditUtil.mask(etNumber, MaskEditUtil.FORMAT_PHONE));
-        etName.setText(contact.getName());
-        etNumber.setText(contact.getNumber());
+
+        if (contact != null) {
+            etName.setText(contact.getName());
+            etNumber.setText(contact.getNumber());
+        }
 
         setupSaveButton();
     }
@@ -81,7 +86,7 @@ public class RegistryContactActivity extends AppCompatActivity {
                     return;
                 }
 
-                if (contact.getName() != null || contact.getNumber() != null) {
+                if (contact != null) {
                     updateContact(contactMap);
                 } else {
                     createContact(contactMap);
@@ -96,9 +101,11 @@ public class RegistryContactActivity extends AppCompatActivity {
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        contact.setId(documentId);
-                        contact.setName(contactMap.get("name").toString());
-                        contact.setNumber(contactMap.get("number").toString());
+                        contact = new Contact(
+                                documentId,
+                                contactMap.get("name").toString(),
+                                contactMap.get("number").toString()
+                        );
 
                         Intent returnIntent = new Intent();
                         returnIntent.putExtra("Contact", contact);
