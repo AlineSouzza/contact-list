@@ -27,7 +27,7 @@ import java.util.ArrayList;
 public class ContactListActivity extends AppCompatActivity {
     private ContactListAdapter adapter;
     private ArrayList<Contact> contactList;
-    private LinearLayout textRegisterContact;
+    private LinearLayout layoutEmptyContact;
     Context context = (Context) this;
 
     @Override
@@ -39,10 +39,10 @@ public class ContactListActivity extends AppCompatActivity {
         setSupportActionBar(myToolbar);
 
         RecyclerView recyclerView = findViewById(R.id.recycler_view);
-        textRegisterContact = findViewById(R.id.text_register_contact);
+        layoutEmptyContact = findViewById(R.id.text_register_contact);
 
         contactList = new ArrayList<Contact>();
-        adapter = new ContactListAdapter(contactList, context);
+        adapter = new ContactListAdapter(contactList, context, this);
 
         LinearLayoutManager llm = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(llm);
@@ -67,10 +67,7 @@ public class ContactListActivity extends AppCompatActivity {
                                 contactList.add(new Contact(document.getId(), document.getString("name"), document.getString("number")));
                             }
 
-                            if (contactList.size() == 0) {
-                                textRegisterContact.setVisibility(View.VISIBLE);
-                            }
-
+                            checkList();
                             adapter.notifyDataSetChanged();
                         } else {
                             Log.d("db", "get failed with ", task.getException());
@@ -97,11 +94,18 @@ public class ContactListActivity extends AppCompatActivity {
 
         if (requestCode == 1) {
             contactList.add(contact);
-            textRegisterContact.setVisibility(View.GONE);
+            layoutEmptyContact.setVisibility(View.GONE);
         } else if (requestCode == 2) {
             loadContacts();
         }
 
         adapter.notifyDataSetChanged();
+    }
+    public void checkList() {
+        if (contactList.size() == 0) {
+            layoutEmptyContact.setVisibility(View.VISIBLE);
+        } else {
+            layoutEmptyContact.setVisibility(View.GONE);
+        }
     }
 }
