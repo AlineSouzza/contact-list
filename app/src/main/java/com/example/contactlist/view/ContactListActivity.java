@@ -78,7 +78,6 @@ public class ContactListActivity extends AppCompatActivity {
 
     public void addContactClicked(View view) {
         Intent intent = new Intent(this, RegistryContactActivity.class);
-        intent.putExtra("Contact", new Contact(null, null, null));
         startActivityForResult(intent, 1);
     }
 
