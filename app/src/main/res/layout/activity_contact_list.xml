@@ -11,6 +11,12 @@
         android:id="@+id/layout_toolbar"
         layout="@layout/toolbar" />
 
+    <include
+        layout="@layout/skeleton_shimmer_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/layout_toolbar" />
+
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/edit_contact"
         android:layout_width="wrap_content"
@@ -28,13 +34,13 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"
-        android:visibility="gone"
-        android:orientation="vertical" >
+        android:orientation="vertical"
+        android:visibility="gone">
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:srcCompat="@drawable/baseline_post_add_24"/>
+            app:srcCompat="@drawable/baseline_post_add_24" />
 
         <TextView
             android:layout_width="wrap_content"
