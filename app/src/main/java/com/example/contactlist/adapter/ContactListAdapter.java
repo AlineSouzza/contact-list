@@ -131,6 +131,7 @@ public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.
                                             public void onComplete(@NonNull Task<Void> task) {
                                                 contactList.remove(holder.getAdapterPosition());
                                                 activity.checkList();
+                                                notifyDataSetChanged();
 
                                                 Toast.makeText(v.getContext(), R.string.toast_deleted_contact_success, Toast.LENGTH_SHORT).show();
                                             }
