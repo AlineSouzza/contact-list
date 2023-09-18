@@ -8,9 +8,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import com.example.contactlist.R;
@@ -24,9 +28,15 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 
+import io.supercharge.shimmerlayout.ShimmerLayout;
+
 public class ContactListActivity extends AppCompatActivity {
     private ContactListAdapter adapter;
     private ArrayList<Contact> contactList;
+    private LinearLayout skeletonLayout;
+    private ShimmerLayout shimmer;
+    private LayoutInflater inflater;
+    private RecyclerView recyclerView;
     private LinearLayout layoutEmptyContact;
     Context context = (Context) this;
 
@@ -34,11 +44,15 @@ public class ContactListActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contact_list);
+
         Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbar);
         myToolbar.setTitle("Lista de contatos");
         setSupportActionBar(myToolbar);
 
-        RecyclerView recyclerView = findViewById(R.id.recycler_view);
+        skeletonLayout = findViewById(R.id.skeletonLayout);
+        shimmer = findViewById(R.id.shimmerSkeleton);
+        this.inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        recyclerView = findViewById(R.id.recycler_view);
         layoutEmptyContact = findViewById(R.id.text_register_contact);
 
         contactList = new ArrayList<Contact>();
@@ -49,11 +63,60 @@ public class ContactListActivity extends AppCompatActivity {
 
         recyclerView.setAdapter(adapter);
 
+        getSkeletonRowCount(this);
         loadContacts();
     }
 
+    public int getSkeletonRowCount(Context context) {
+        int pxHeight = getDeviceHeight(context);
+        int skeletonRowHeight = (int) getResources()
+                .getDimension(R.dimen.row_layout_height); //converts to pixel
+        return (int) Math.ceil(pxHeight / skeletonRowHeight);
+    }
+    public int getDeviceHeight(Context context){
+        Resources resources = context.getResources();
+        DisplayMetrics metrics = resources.getDisplayMetrics();
+        return metrics.heightPixels;
+    }
+
+    public void showSkeleton(boolean show) {
+
+        if (show) {
+            skeletonLayout.removeAllViews();
+
+            int skeletonRows = getSkeletonRowCount(this);
+            for (int i = 0; i <= skeletonRows; i++) {
+                ViewGroup rowLayout = (ViewGroup) inflater
+                        .inflate(R.layout.layout_loading_contact_cell, null);
+                skeletonLayout.addView(rowLayout);
+            }
+            shimmer.setVisibility(View.VISIBLE);
+            shimmer.startShimmerAnimation();
+            skeletonLayout.setVisibility(View.VISIBLE);
+            skeletonLayout.bringToFront();
+        } else {
+            shimmer.stopShimmerAnimation();
+            shimmer.setVisibility(View.GONE);
+        }
+    }
+
+    public void animateReplaceSkeleton(View listView) {
+
+        listView.setVisibility(View.VISIBLE);
+        listView.setAlpha(0f);
+        listView.animate().alpha(1f).setDuration(500).start();
+
+        skeletonLayout.animate().alpha(0f).setDuration(500).withEndAction(new Runnable() {
+            @Override
+            public void run() {
+                showSkeleton(false);
+            }
+        }).start();
+
+    }
 
     protected void loadContacts() {
+        showSkeleton(true);
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         contactList.clear();
 
@@ -69,7 +132,9 @@ public class ContactListActivity extends AppCompatActivity {
 
                             checkList();
                             adapter.notifyDataSetChanged();
+                            animateReplaceSkeleton(recyclerView);
                         } else {
+                            showSkeleton(false);
                             Log.d("db", "get failed with ", task.getException());
                         }
                     }
@@ -94,11 +159,10 @@ public class ContactListActivity extends AppCompatActivity {
         if (requestCode == 1) {
             contactList.add(contact);
             layoutEmptyContact.setVisibility(View.GONE);
+            adapter.notifyDataSetChanged();
         } else if (requestCode == 2) {
             loadContacts();
         }
-
-        adapter.notifyDataSetChanged();
     }
     public void checkList() {
         if (contactList.size() == 0) {
