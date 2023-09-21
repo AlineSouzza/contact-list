@@ -22,6 +22,10 @@ https://github.com/AlineSouzza/contact-list/assets/93063669/00a0b079-4587-415d-9
 
 https://github.com/AlineSouzza/contact-list/assets/93063669/61c95d1c-e9d3-4c4a-8a0c-4e1f629e5d01
 
+Uma outra função, é a _call phone_. Ao clicar no ícone do telefone o usuário é direcionado para a tela de chamada do aplicativo padrão do sistema. Acompanhe abaixo:
+
+https://github.com/AlineSouzza/contact-list/assets/93063669/e54b885d-1f73-4855-acca-212dcf1ecab4
+
 ## Obeservação
 Quando o aplicativo se inicia ou quando ocorre uma edição no contato, é feita uma busca dos dados no Cloud Firestore. E para que isso seja perceptível ao olhos do usuário, é utilizado o efeito de skeleto. Veja abaixo:
 
